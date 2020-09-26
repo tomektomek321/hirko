@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<script src='ext_libs/jquery.js'></script>
+			
+		
+		<link rel="stylesheet" href='ext_libs/bootstrap/css/bootstrap.min.css'>
+		<script src='ext_libs/bootstrap/js/bootstrap.min.js'></script>
+		<link rel="stylesheet" href='basic.css'>
+		<script src='View.js'></script>
+		<script src='char.js'></script>
+		<script src='charSelector.js'></script>
+		<script src='char_data.js'></script>
+        <script src='gameController.js'></script>
+        
+	</head>
+
+<body>
+<!--
+<span id="showInfo"></span>
+-->
+<script>
+
+	function getRndInteger(min, max) {
+	  	return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+	var chars= [[],[],[]];
+
+	
+	function startGame() {
+		
+		
+		// name, team, life, amount, moveArea, height_Width, demage
+
+		chars[1].push(
+			new char(new giermek(500)),
+			new char(new dragon(30)),
+			new char(new elf(215)),
+			new char(new mag(20))
+		);
+
+		chars[2].push(
+			new char(new giermek(70)),
+			new char(new dragon(2)),
+			new char(new elf(10))
+		);
+
+	    //gameMaker1 = new gameMaker(chars);
+	    
+	    myGameArea.init();
+
+	}
+
+
+	var myGameArea = {
+
+	    canvas : document.createElement("canvas"),
+
+	    init : function() {
+	        this.canvas.width = 600;
+	        this.canvas.height = 400;
+	        this.canvas.setAttribute("id", "myCanvas"),
+	        this.context = this.canvas.getContext("2d");
+	        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+	        this.frameNo = 0;
+	        ctx = this.canvas.getContext("2d");
+	        setStartCharPosition();
+	        updateGameArea();
+	    },
+	    start : function() {
+	    	this.interval = setInterval(updateGameArea, 20);
+	    },
+	    clear : function() {
+	        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	    },
+
+	    stop : function() {
+	        clearInterval(this.interval);
+	    }
+
+	}
+
+
+	function setStartCharPosition() {
+
+		var x_start_team = [null, 30, 450];
+
+		var y_distance = 60;
+
+		for(var i=1; i < chars.length; i++) {
+
+			y_distance = 60;
+			for(var j=0; j < chars[i].length; j++) {
+
+	    		chars[i][j].setPosition(x_start_team[i], y_distance);
+	    		y_distance+= 60;
+	    	}
+
+	    }
+	    
+	}
+
+	function updateGameArea() {
+
+	    myGameArea.clear();
+
+		for(var i=1; i < chars.length; i++) {
+			gameOver = 0;
+			
+			for(var j=0; j < chars[i].length; j++) {
+
+				chars[i][j].renderPosition(i); // i = team
+	    		if(chars[i][j].char.amount == 0) {
+	    			gameOver++;
+	    		}	
+	    	}
+
+	    }
+	    
+		gameController.renderSelectedCharPosition();
+		
+	}
+
+	startGame();
+
+
+	myGameArea.canvas.addEventListener('click', function(event) {
+	    
+	}, false);
+
+
+	myGameArea.canvas.addEventListener('mousemove', function(event) {
+
+
+	}, false);
+
+
+	var canvasek = document.getElementById("myCanvas");
+		var elemLeft = canvasek.offsetLeft,
+			elemTop = canvasek.offsetTop;
+	
+   	function showPlayers() {console.log(chars); console.log(gameController.team);}
+
+
+</script>
+
+
+<div id="defDIV">
+	<button type="button" class="btn btn-secondary"  onclick="gameController.next_character()">Next/Def</button>
+</div>
+
+<div>
+	<button type="button" class="btn btn-info" onclick="showPlayers();">showPlayers</button>
+</div>
+
+
+<div class="btn-group btn-group-lg" id="spellsBtns">
+	
+</div>
+<span id="char_info"></span>
+
+</body>
+
+
+
+</html>
