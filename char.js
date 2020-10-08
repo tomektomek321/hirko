@@ -56,6 +56,14 @@ function char(char) {
 
     }
 
+    this.getSide = function() {
+        return this.char.side;
+    }
+
+    this.getMoveArea = function() {
+        return this.char.moveArea;
+    }
+
     this.getPosition = function() {
         return {'X':this.centerXChar, 'Y': this.centerYChar};
     }
