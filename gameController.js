@@ -24,6 +24,13 @@ return {
 
 	},
 
+
+	actionCharacter() {
+		Move.makeMove(chars[team][char_selected - 1], Cursor.getPos(), this.next_character);
+
+
+	},
+
 }
 })();
 
