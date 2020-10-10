@@ -6,7 +6,7 @@ function giermek(amount) {
     this.name = "giermek";
     this.life = 20;
     this.lifeOfLast = 20;
-    this.moveArea = 630;
+    this.moveArea = 180;
     this.side = 10;
     this.demage = 5;
     this.throw = false;

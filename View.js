@@ -6,7 +6,6 @@ var View = (function() {
         return pos;
     }
 
-
     var _render_char = function(ctx, posX, posY, side, color) {
         ctx.fillStyle = color;
         ctx.fillRect(posX, posY, side, side);
@@ -31,12 +30,25 @@ var View = (function() {
         render_charInfo: _render_charInfo,
         renderSelectedCharPosition: _renderSelectedCharPosition,
 
+        renderHoveredCharMoveArea(char) {
+            ctx.beginPath();
+            ctx.arc(char.centerXChar, char.centerYChar, char.getMoveArea(), 0, 2 * Math.PI);
+            ctx.fillStyle = "#DCDCDC";
+            ctx.fill();
+            ctx.strokeStyle = "#C0C0C0";
+            ctx.stroke();
+        },
 
+        renderSelecterCharMoveArea(char) {
+            if(char.getAmount() == 0) return;
 
-
-
-
-
+            ctx.beginPath();
+            ctx.arc(char.centerXChar, char.centerYChar, char.getMoveArea(), 0, 2 * Math.PI);
+            ctx.fillStyle = "#DCDCDC";
+            ctx.fill();
+            ctx.strokeStyle = "#C0C0C0";
+            ctx.stroke();
+        },
     }
 
 

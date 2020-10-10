@@ -32,9 +32,6 @@
 	
 	function startGame() {
 		
-		
-		// name, team, life, amount, moveArea, height_Width, demage
-
 		chars[1].push(
 			new char(new giermek(500)),
 			new char(new dragon(30)),
@@ -48,8 +45,6 @@
 			new char(new elf(10))
 		);
 
-	    //gameMaker1 = new gameMaker(chars);
-	    
 	    myGameArea.init();
 
 	}
@@ -98,14 +93,16 @@
 	    		chars[i][j].setPosition(x_start_team[i], y_distance);
 	    		y_distance+= 60;
 	    	}
-
 	    }
-	    
 	}
 
 	function updateGameArea() {
 
-	    myGameArea.clear();
+		myGameArea.clear();
+		
+		gameController.renderSelecterCharMoveArea();
+
+		gameController.renderHoveredCharMoveArea();
 
 		for(var i=1; i < chars.length; i++) {
 			gameOver = 0;
@@ -118,8 +115,8 @@
 	    		}	
 	    	}
 
-	    }
-	    
+		}
+		
 		gameController.renderSelectedCharPosition();
 		
 	}
@@ -136,7 +133,8 @@
 	    var x = event.pageX - elemLeft,
 	        y = event.pageY - elemTop;
 
-        Cursor.setPos(x, y);
+		Cursor.setPos(x, y);
+		gameController.checkHover();
 
 	}, false);
 
