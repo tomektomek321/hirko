@@ -56,6 +56,22 @@ function char(char) {
 
     }
 
+    this.isHover = function(cursor) {
+        //console.log(cursor);
+        if((cursor.X > this.posX && cursor.X < this.posX + this.char.side) && (cursor.Y > this.posY && cursor.Y < this.posY + this.char.side)) {
+            //console.log("HOVER " + this.char.name);
+            this.hover = true;
+            return true;
+        } else {
+            this.hover = false;
+            return false;
+        }
+    }
+
+    this.renderHoveredCharMoveArea = function() {
+        View.renderHoveredCharMoveArea(this);
+    }
+
     this.getSide = function() {
         return this.char.side;
     }

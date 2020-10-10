@@ -105,7 +105,11 @@
 
 	function updateGameArea() {
 
-	    myGameArea.clear();
+		myGameArea.clear();
+		
+		gameController.renderSelecterCharMoveArea();
+
+		gameController.renderHoveredCharMoveArea();
 
 		for(var i=1; i < chars.length; i++) {
 			gameOver = 0;
@@ -118,7 +122,9 @@
 	    		}	
 	    	}
 
-	    }
+		}
+		
+		
 	    
 		gameController.renderSelectedCharPosition();
 		
@@ -136,7 +142,8 @@
 	    var x = event.pageX - elemLeft,
 	        y = event.pageY - elemTop;
 
-        Cursor.setPos(x, y);
+		Cursor.setPos(x, y);
+		gameController.checkHover();
 
 	}, false);
 
