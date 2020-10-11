@@ -87,7 +87,7 @@ function char(char) {
     }
 
     this.getName = function() {
-        return this.char.name;
+        return this.char.name; // hehe 
     }
 
     this.getFullLife = function() {
