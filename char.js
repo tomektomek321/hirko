@@ -1,21 +1,15 @@
 
 
-function char(char) {
+function char(char_) {
 
-    this.char = char;
+    this.char = char_;
 
     this.state = "norm";
 
     this.typeOfAttack = "normal";
 
-    this.posX;
-    this.posY;
-
-    this.centerXChar;
-    this.centerYChar;
-
     this.hover = false;
-    
+
     this.spellsUpon = [];
 
     this.setPosition = function(x, y) {
@@ -30,13 +24,13 @@ function char(char) {
 
 
     this.renderPosition = function(team) {
-        
+
         var color = (team == 1) ? "red" : "blue";
 
-        ctx = myGameArea.context;
+        let ctx = myGameArea.context;
 
         var life = (this.char.life * (this.char.amount - 1)) + this.char.lifeOfLast;
-        
+
         View.render_char(ctx, this.posX, this.posY, this.char.side, color);
         View.render_charInfo(ctx, life, this.posX, this.posY, this.char.name, this.char.amount, this.char.demage);
 
@@ -44,16 +38,7 @@ function char(char) {
 
 
     this.isOnLine = function(lineX, lineY) {
-
-        if((lineX >= this.posX && lineX <= this.posX + this.getSide()) && 
-            (lineY >= this.posY && lineY <= this.posY + this.getSide())) {
-            
-            return true;
-
-        } else {
-            return false;
-        }
-
+        return ((lineX >= this.posX && lineX <= this.posX + this.getSide()) && (lineY >= this.posY && lineY <= this.posY + this.getSide())) ? true : false;
     }
 
     this.isHover = function(cursor) {
@@ -68,6 +53,46 @@ function char(char) {
 
     this.renderHoveredCharMoveArea = function() {
         View.renderHoveredCharMoveArea(this);
+    }
+
+    this.isDead = function() {
+        return (this.char.amount === 0) ? true : false;
+    }
+
+    this.makeDead = function() {
+
+        this.char.life = 0;
+        this.char.lifeOfLast = 0;
+        this.char.amount = 0;
+        this.posX = null;
+        this.posY = null;
+        this.centerXChar = null;
+        this.centerYChar = null;
+
+    }
+
+    this.attacked = function(demage) {
+        this.char.life -= demage;
+    }
+
+    this.getDamage = function() {
+        return this.char.demage;
+    }
+
+    this.getLife = function() {
+        return this.char.life;
+    }
+
+    this.getLifeOfLast = function() {
+        return this.char.lifeOfLast;
+    }
+
+    this.setLifeOfLast = function(val) {
+        this.char.lifeOfLast = val;
+    }
+
+    this.returnFullDamage = function() {
+        return this.char.amount * this.char.demage;
     }
 
     this.getSide = function() {
@@ -87,7 +112,7 @@ function char(char) {
     }
 
     this.getName = function() {
-        return this.char.name; // hehe 
+        return this.char.name; // hehe
     }
 
     this.getFullLife = function() {
@@ -97,6 +122,9 @@ function char(char) {
     this.getAmount = function() {
         return this.char.amount;
     }
-	
+
+    this.setAmount = function(val) {
+        this.char.amount = val;
+    }
 }
 

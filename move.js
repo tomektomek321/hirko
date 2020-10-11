@@ -1,14 +1,9 @@
 
 var Move = (function() {
 
-    var divide_interv = 40;
-
     var _getPos = function() {
         return pos;
     }
-
-	is_animation = false;
-	nowThrow = false;
 
     return {
         getPos: _getPos,
@@ -21,14 +16,13 @@ var Move = (function() {
 			var start_pos = char.getPosition();
 
 			var z = Math.floor(Math.sqrt(Math.pow(pos.X - start_pos.X, 2) + Math.pow(pos.Y - start_pos.Y, 2)));
-			
-            if(z > moveArea) { console.log("Nie mozna tak daleko"); return; }
-            
-            var divide_interv = 85;
-            var halfSide = char.getSide() / 2;
 
-			var x_len = ((pos.X - start_pos.X)) / divide_interv;
-            var y_len = ((pos.Y - start_pos.Y)) / divide_interv;
+            if(z > moveArea) { console.log("Nie mozna tak daleko"); return; }
+
+			var divide_interv = 85;
+
+			var x_len = (pos.X - start_pos.X) / divide_interv;
+            var y_len = (pos.Y - start_pos.Y) / divide_interv;
 
 
             console.log(x_len);
@@ -37,30 +31,26 @@ var Move = (function() {
 
 			var next_posX = start_pos.X;
             var next_posY = start_pos.Y;
-            
 
 			var cl = 1;
 
-            is_animation = true;
-            
-			
 			var counterDivider = 0;
 			var intervalek = setInterval(function() {
 
-                cl++; 
+                cl++;
                 counterDivider++;
 
 				next_posX = next_posX + x_len;
 				next_posY = next_posY + y_len;
 
 				char.setPosition(next_posX - 7, next_posY - 7);
-                
+
                 updateGameArea();
-                
+
 				if(cl > 90) clearInterval(intervalek);
-				
+
 				if(counterDivider > divide_interv) {
-					
+
 					clearInterval(intervalek);
 					callback();
 				}
@@ -69,7 +59,56 @@ var Move = (function() {
 
         },
 
+		moveTo(char, hoveredChar, callback) {
 
+			const {X , Y} = Cursor.getPos();
+			console.log(X, Y);
+
+			var aim_char = hoveredChar;
+
+			var aim_pos = hoveredChar.getXY();
+
+			var sel_pos = char.getXY();
+
+			var moveArea = char.getMoveArea();
+
+			var z = Math.floor(Math.sqrt(Math.pow(X - sel_pos.X, 2) + Math.pow(Y - sel_pos.Y, 2)));
+
+			if(z > moveArea) { console.log("Nie mozna tak daleko"); return; }
+
+			var x_len = (aim_pos.X - sel_pos.X) / 70;
+			var y_len = (aim_pos.Y - sel_pos.Y) / 70;
+
+			var next_posX = sel_pos.X;
+			var next_posY = sel_pos.Y;
+			var cl = 1;
+
+			var intervalek = setInterval(function() {
+				cl++;
+
+
+				char.setPosition(next_posX, next_posY);
+
+				var height = char.getSide();
+
+				updateGameArea();
+
+				if((next_posY + height + 3 > aim_pos.Y && next_posY < aim_pos.Y + aim_char.getSide() + 3) &&
+					(next_posX + height + 3 > aim_pos.X && next_posX < aim_pos.X + aim_char.getSide() + 3) ) {
+					callback();
+					clearInterval(intervalek);
+				}
+
+				if(cl > 160) {clearInterval(intervalek);}
+
+
+				next_posX = next_posX + x_len;
+				next_posY = next_posY + y_len;
+
+
+			}, 5);
+
+		},
 
     }
 

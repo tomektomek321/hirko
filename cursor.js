@@ -14,14 +14,7 @@ var Cursor = (function() {
     var _setPos = function(x, y) {
         pos.X = x;
         pos.Y = y;
-        //console.log(pos);
-        
     }
-
-    var _resetPos = function() {
-        pos.X = null,
-        pos.Y = null
-    }       
 
     return {
         getPos: _getPos,
@@ -31,6 +24,5 @@ var Cursor = (function() {
             pos.X = spell;
         }
     }
-
 
 })();

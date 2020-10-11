@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
 <html>
-
 	<head>
+		<title>go</title>
 		<script src='ext_libs/jquery.js'></script>
-			
-		
+
 		<link rel="stylesheet" href='ext_libs/bootstrap/css/bootstrap.min.css'>
 		<script src='ext_libs/bootstrap/js/bootstrap.min.js'></script>
 		<link rel="stylesheet" href='basic.css'>
+		<script src='Attack.js'></script>
 		<script src='View.js'></script>
 		<script src='char.js'></script>
 		<script src='cursor.js'></script>
@@ -16,7 +16,7 @@
 		<script src='charSelector.js'></script>
 		<script src='char_data.js'></script>
         <script src='gameController.js'></script>
-        
+
 	</head>
 
 <body>
@@ -29,9 +29,9 @@
 
 	var chars= [[],[],[]];
 
-	
+
 	function startGame() {
-		
+
 		chars[1].push(
 			new char(new giermek(500)),
 			new char(new dragon(30)),
@@ -99,26 +99,26 @@
 	function updateGameArea() {
 
 		myGameArea.clear();
-		
+
 		gameController.renderSelecterCharMoveArea();
 
 		gameController.renderHoveredCharMoveArea();
 
 		for(var i=1; i < chars.length; i++) {
 			gameOver = 0;
-			
+
 			for(var j=0; j < chars[i].length; j++) {
 
 				chars[i][j].renderPosition(i); // i = team
 	    		if(chars[i][j].char.amount == 0) {
 	    			gameOver++;
-	    		}	
+	    		}
 	    	}
 
 		}
-		
+
 		gameController.renderSelectedCharPosition();
-		
+
 	}
 
 	startGame();
@@ -142,7 +142,7 @@
 	var canvasek = document.getElementById("myCanvas");
 		var elemLeft = canvasek.offsetLeft,
 			elemTop = canvasek.offsetTop;
-	
+
    	function showPlayers() {console.log(chars); console.log(gameController.team);}
 
 
@@ -159,7 +159,7 @@
 
 
 <div class="btn-group btn-group-lg" id="spellsBtns">
-	
+
 </div>
 <span id="char_info"></span>
 
