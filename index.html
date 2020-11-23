@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 	<head>
 		<title>go</title>
 		<script src='ext_libs/jquery.js'></script>
@@ -8,6 +8,8 @@
 		<link rel="stylesheet" href='ext_libs/bootstrap/css/bootstrap.min.css'>
 		<script src='ext_libs/bootstrap/js/bootstrap.min.js'></script>
 		<link rel="stylesheet" href='basic.css'>
+		<script src='Bullet.js'></script>
+		<script src='Spell.js'></script>
 		<script src='Attack.js'></script>
 		<script src='View.js'></script>
 		<script src='char.js'></script>
@@ -104,18 +106,37 @@
 
 		gameController.renderHoveredCharMoveArea();
 
+		let gameOver = false;
+
 		for(var i=1; i < chars.length; i++) {
-			gameOver = 0;
+			//gameOver = 0;
+			//console.log(chars[i]);
+			if(chars[i].length === 0) {
+
+				gameOver = true;
+				break;
+			}
 
 			for(var j=0; j < chars[i].length; j++) {
 
 				chars[i][j].renderPosition(i); // i = team
 	    		if(chars[i][j].char.amount == 0) {
-	    			gameOver++;
+	    			//gameOver++;
 	    		}
 	    	}
 
 		}
+
+		if(gameOver) {
+			gameController.endGame();
+			return;
+		}
+
+		gameController.showSpells_Btns();
+
+		Bullet.render();
+
+		Spell.renderSpell();
 
 		gameController.renderSelectedCharPosition();
 
@@ -135,6 +156,7 @@
 
 		Cursor.setPos(x, y);
 		gameController.checkHover();
+		gameController.setThrowRangeFraction();
 
 	}, false);
 

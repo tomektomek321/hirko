@@ -27,6 +27,24 @@ function char(char_) {
 
         var color = (team == 1) ? "red" : "blue";
 
+        if(Spell.hasSpell()) {
+
+            var spell = Spell.getChoosen();
+            const { X, Y } = Cursor.getPos();
+
+            var area = {
+                'X': X - spell.range,
+                'Y': Y - spell.range,
+                'side': spell.range * 2
+            }
+
+            if((area.X + area.side + 3 >= this.posX && area.X <= this.posX + this.char.side) &&
+                    (area.Y + area.side + 3 >= this.posY && area.Y <= this.posY + this.char.side)) {
+                color = "yellow";
+            }
+
+        }
+
         let ctx = myGameArea.context;
 
         var life = (this.char.life * (this.char.amount - 1)) + this.char.lifeOfLast;
@@ -50,6 +68,42 @@ function char(char_) {
             return false;
         }
     }
+
+    this.setThrowRange_Fraction = function({X, Y}) {
+
+        var z = Math.floor(Math.sqrt(Math.pow(X - this.centerXChar, 2) + Math.pow(Y - this.centerYChar, 2)));
+
+        var isRange = z - this.char.throwRange;
+
+        if(isRange < 0) {
+            this.char.nowAttack['range'] = 1;
+        } else if(isRange > 0 && isRange < 100) {
+            this.char.nowAttack['range'] = 0.50;
+        } else if(isRange > 100 /*&& isRange > -200*/) {
+            this.char.nowAttack['range'] = 0.25;
+        }
+
+        if(this.canThrow() && this.char.nowAttack['range'] != null) {
+            View.renderThrowRangeFraction(ctx, this.char.nowAttack['range'], Cursor.getPos());
+        }
+
+    }
+
+    this.isReachedBySpell = function(spell, {X, Y}) {
+
+        var rectArea = {
+            'X': X - spell.range,
+            'Y': Y - spell.range,
+            'side': spell.range * 2
+        }
+
+        return ((rectArea.X + rectArea.side + 3 >= this.posX && rectArea.X <= this.posX + this.getSide()) &&
+            (rectArea.Y + rectArea.side + 3 >= this.posY && rectArea.Y <= this.posY + this.getSide()))
+
+
+    }
+
+
 
     this.renderHoveredCharMoveArea = function() {
         View.renderHoveredCharMoveArea(this);
@@ -125,6 +179,30 @@ function char(char_) {
 
     this.setAmount = function(val) {
         this.char.amount = val;
+    }
+
+    this.canThrow = function() {
+        return (this.char.throw) ? true : false;
+    }
+
+    this.canSpell = function() {
+        return (this.char.magic && this.char.magic.length > 0) ? true : false;
+    }
+
+    this.getSpells = function() {
+        return this.char.magic;
+    }
+
+    this.getSelectedSpell = function() {
+        return null;
+    }
+
+    this.setSpell = function(spell) {
+        this.spellsUpon.push(spell);
+    }
+
+    this.getSettedSpells = function() {
+        return this.spellsUpon;
     }
 }
 

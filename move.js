@@ -3,7 +3,11 @@ var Move = (function() {
 
     var _getPos = function() {
         return pos;
-    }
+	}
+
+	var divide_interv = 40;
+	var is_animation = false;
+	var nowThrow = false;
 
     return {
         getPos: _getPos,
@@ -19,7 +23,7 @@ var Move = (function() {
 
             if(z > moveArea) { console.log("Nie mozna tak daleko"); return; }
 
-			var divide_interv = 85;
+			//var divide_interv = 85;
 
 			var x_len = (pos.X - start_pos.X) / divide_interv;
             var y_len = (pos.Y - start_pos.Y) / divide_interv;
@@ -106,9 +110,52 @@ var Move = (function() {
 				next_posY = next_posY + y_len;
 
 
-			}, 5);
+			}, 25);
 
 		},
+
+
+
+		throw(char, aim_char, callback) {
+
+			var {X, Y} = aim_char.getXY();
+
+			var sel_pos = char.getXY();
+
+			var x_len = (X - sel_pos.X) / divide_interv;
+			var y_len = (Y - sel_pos.Y) / divide_interv;
+
+			var next_posX = sel_pos.X;
+			var next_posY = sel_pos.Y;
+			var cl = 1;
+
+			//is_animation = true;
+
+			var intervalek = setInterval(function() {
+
+
+				Bullet.setPos(next_posX, next_posY);
+
+				var height = char.getSide();
+
+				if((next_posY + height > Y && next_posY < Y + aim_char.getSide()) &&
+					(next_posX + height > X && next_posX < X + aim_char.getSide()) ) {
+						Bullet.resetThrow();
+						callback();
+						clearInterval(intervalek);
+				}
+
+				if(cl > 160) {clearInterval(intervalek);} cl++;
+
+				updateGameArea();
+
+				next_posX = next_posX + x_len;
+				next_posY = next_posY + y_len;
+
+
+			}, 5);
+
+		}
 
     }
 

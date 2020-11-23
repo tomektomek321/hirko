@@ -8,14 +8,15 @@ var View = (function() {
 
     var _render_char = function(ctx, posX, posY, side, color) {
         ctx.fillStyle = color;
+        if(posX == null || posY == null) return;
         ctx.fillRect(posX, posY, side, side);
-    } 
-    
+    }
+
     var _render_charInfo = function(ctx, life, x, y, name, amount, dmg) {
         ctx.font = this.font + "px Ariel";
         ctx.fillStyle = "red";
         ctx.fillText(name + ", life: " + life + ", (" + amount + "), dmg: " +  dmg * amount, x, y - 10);
-    }   
+    }
 
     var _renderSelectedCharPosition = function(char, team) {
         var xy = char.getXY();
@@ -49,6 +50,15 @@ var View = (function() {
             ctx.strokeStyle = "#C0C0C0";
             ctx.stroke();
         },
+
+        endGame() {
+             ctx.fillText(" GAME OVER ", 300, 10);
+        },
+
+        renderThrowRangeFraction(ctx, range, {X, Y}) {
+            ctx.fillStyle = "black";
+            ctx.fillText(range + " %", X, Y - 15);
+        }
     }
 
 
