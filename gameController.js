@@ -4,7 +4,7 @@
 var gameController = (function() {
 
 var team = 1;
-var char_selected = 1;
+var char_selected = 0;
 var hoveredChar = null;
 
 return {
@@ -14,11 +14,11 @@ return {
 	},
 
 	renderSelectedCharPosition() {
-		View.renderSelectedCharPosition(chars[team][char_selected - 1], team);
+		View.renderSelectedCharPosition(chars[team][char_selected], team);
 	},
 
 	renderSelecterCharMoveArea() {
-		View.renderSelecterCharMoveArea(chars[team][char_selected - 1]);
+		View.renderSelecterCharMoveArea(chars[team][char_selected]);
 	},
 
 	next_character() {
@@ -28,6 +28,8 @@ return {
 		var odp = CharSelector.selectChar(chars, char_selected, team);
 		char_selected = odp[0];
 		team = odp[1];
+
+		InfoBox.setSelectedChar(chars[team][char_selected]);
 
 		updateGameArea();
 
@@ -41,6 +43,7 @@ return {
 
 				if(chars[i][j].isHover(Cursor.getPos())) {
 					hoveredChar = chars[i][j];
+					InfoBox.setHoveredChar(hoveredChar);
 					updateGameArea();
 					return;
 				}
@@ -69,7 +72,7 @@ return {
 
 					if(chars[oponent][i].isReachedBySpell(Spell.getChoosen(), Cursor.getPos())) {
 
-						Attack.defaultAttack(chars[team][char_selected - 1], tempChar);
+						Attack.defaultAttack(chars[team][char_selected], tempChar);
 					}
 				}
 			}
@@ -80,7 +83,7 @@ return {
 			updateGameArea();
 
 		} else if(hoveredChar == null) { // move
-			Move.makeMove(chars[team][char_selected - 1], Cursor.getPos(), this.next_character);
+			Move.makeMove(chars[team][char_selected], Cursor.getPos(), this.next_character);
 		} else {
 			var selected_enemy = hoveredChar;
 
@@ -89,19 +92,19 @@ return {
 			} else {
 				var _t = this;
 
-				if(chars[team][char_selected - 1].canThrow()) {
+				if(chars[team][char_selected].canThrow()) {
 
-					Move.throw(chars[team][char_selected - 1], selected_enemy, function() {
+					Move.throw(chars[team][char_selected], selected_enemy, function() {
 
-						Attack.defaultAttack(chars[team][char_selected - 1], selected_enemy);
+						Attack.defaultAttack(chars[team][char_selected], selected_enemy);
 						_t.next_character();
 					})
 
 				} else {
 
-					Move.moveTo(chars[team][char_selected - 1], selected_enemy, function() {
+					Move.moveTo(chars[team][char_selected], selected_enemy, function() {
 
-						Attack.defaultAttack(chars[team][char_selected - 1], selected_enemy);
+						Attack.defaultAttack(chars[team][char_selected], selected_enemy);
 						_t.next_character();
 					})
 
@@ -120,19 +123,19 @@ return {
 
 	setThrowRangeFraction() {
 
-		if(chars[team][char_selected - 1].canThrow()) {
-			chars[team][char_selected - 1].setThrowRange_Fraction(Cursor.getPos());
+		if(chars[team][char_selected].canThrow()) {
+			chars[team][char_selected].setThrowRange_Fraction(Cursor.getPos());
 		}
 
 	},
 
 	showSpells_Btns() {
 		let spells;
-		if(chars[team][char_selected - 1].canSpell()) {
-			spells = chars[team][char_selected - 1].getSpells();
+		if(chars[team][char_selected].canSpell()) {
+			spells = chars[team][char_selected].getSpells();
 
 			Spell.showSpells_Btns(spells);
-		} else if(chars[team][char_selected - 1].canThrow()) {
+		} else if(chars[team][char_selected].canThrow()) {
 			spells = [{'name': 'throw'}, {'name': 'normal hit'}];
 			Spell.showSpells_Btns(spells);
 		}

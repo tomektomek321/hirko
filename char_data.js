@@ -44,7 +44,7 @@ function elf(amount) {
 
 
 function mag(amount) {
-    
+
     this.name = "mag";
     this.life = 50;
     this.lifeOfLast = 50;
@@ -54,7 +54,7 @@ function mag(amount) {
     this.throw = false;
     this.amount = amount;
     this.nowAttack = {};
-    
+
 
     this.magic = [
         {
@@ -73,6 +73,9 @@ function mag(amount) {
         }, {
             'name': 'halfMove',
             'disc': 'the victim upon its spelled has half damage',
+        }, {
+            'name': 'halfLife',
+            'disc': 'the victim upon its spelled has half life',
         },
 
 

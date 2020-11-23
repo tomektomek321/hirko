@@ -130,11 +130,11 @@ function char(char_) {
     }
 
     this.getDamage = function() {
-        return this.char.demage;
+        return (this.spellsUpon.includes("halfDamage")) ? this.char.demage / 2 : this.char.demage;
     }
 
     this.getLife = function() {
-        return this.char.life;
+        return (this.spellsUpon.includes("halfLife")) ? this.char.life / 2 : this.char.life;
     }
 
     this.getLifeOfLast = function() {
@@ -154,7 +154,7 @@ function char(char_) {
     }
 
     this.getMoveArea = function() {
-        return this.char.moveArea;
+        return (this.spellsUpon.includes("halfMove")) ? this.char.moveArea / 2 : this.char.moveArea;
     }
 
     this.getPosition = function() {

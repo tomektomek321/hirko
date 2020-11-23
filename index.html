@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href='ext_libs/bootstrap/css/bootstrap.min.css'>
 		<script src='ext_libs/bootstrap/js/bootstrap.min.js'></script>
 		<link rel="stylesheet" href='basic.css'>
+		<script src='InfoBox.js'></script>
 		<script src='Bullet.js'></script>
 		<script src='Spell.js'></script>
 		<script src='Attack.js'></script>
@@ -95,7 +96,9 @@
 	    		chars[i][j].setPosition(x_start_team[i], y_distance);
 	    		y_distance+= 60;
 	    	}
-	    }
+		}
+
+		InfoBox.setSelectedChar(chars[1][0]);
 	}
 
 	function updateGameArea() {
@@ -109,28 +112,24 @@
 		let gameOver = false;
 
 		for(var i=1; i < chars.length; i++) {
-			//gameOver = 0;
-			//console.log(chars[i]);
-			if(chars[i].length === 0) {
-
-				gameOver = true;
-				break;
-			}
 
 			for(var j=0; j < chars[i].length; j++) {
 
 				chars[i][j].renderPosition(i); // i = team
 	    		if(chars[i][j].char.amount == 0) {
-	    			//gameOver++;
+	    			gameOver++;
 	    		}
-	    	}
+			}
 
+			if(gameOver == chars[i].length) {
+				gameController.endGame();
+				return;
+			}
 		}
 
-		if(gameOver) {
-			gameController.endGame();
-			return;
-		}
+
+
+
 
 		gameController.showSpells_Btns();
 
@@ -139,6 +138,8 @@
 		Spell.renderSpell();
 
 		gameController.renderSelectedCharPosition();
+
+		InfoBox.renderHoveredChar();
 
 	}
 
@@ -183,10 +184,9 @@
 <div class="btn-group btn-group-lg" id="spellsBtns">
 
 </div>
-<span id="char_info"></span>
+<div id="char_info"></div>
 
 </body>
-
 
 
 </html>
