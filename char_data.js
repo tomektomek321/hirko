@@ -76,6 +76,9 @@ function mag(amount) {
         }, {
             'name': 'halfLife',
             'disc': 'the victim upon its spelled has half life',
+        }, {
+            'name': 'doubleThrow',
+            'disc': 'the char upon its spelled throws double belt',
         },
 
 

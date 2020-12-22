@@ -35,6 +35,10 @@ return {
 
 	},
 
+	getSelectedChar() {
+		return chars[team][char_selected];
+	},
+
 	checkHover() {
 
 		for(var i=1; i < chars.length; i++) {
@@ -55,6 +59,13 @@ return {
 
 	},
 
+	isCharFromSelectedTeam(_team) {
+		if(_team === team) {
+			return true;
+		} else {
+			return false;
+		}
+	},
 
 	actionCharacter() {
 		if(Spell.hasSpell()) { // click while using spell
@@ -143,6 +154,13 @@ return {
 
 
 	},
+
+	renderSpell() {
+
+		Spell.renderSpell();
+
+
+	}
 
 
 

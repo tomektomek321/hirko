@@ -58,8 +58,30 @@ var View = (function() {
         renderThrowRangeFraction(ctx, range, {X, Y}) {
             ctx.fillStyle = "black";
             ctx.fillText(range + " %", X, Y - 15);
+        },
+
+        renderDoubleBelt(ctx) {
+
+            //let theta = Math.atan2(distY, distX);
+            //theta *= 180/Math.PI;
+
+            let {char, linesPos} = Spell.getExtraData();
+            ctx.beginPath();
+            ctx.moveTo(char.X, char.Y);
+            ctx.lineTo(linesPos[0].line1endX , linesPos[0].line1endY);
+            //ctx.lineTo(cursorPos.X + r * Math.cos(Math.PI * (theta - 6) / 180.0),
+            //cursorPos.Y + r * Math.sin(Math.PI * (theta - 6) / 180.0));
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(char.X, char.Y);
+            ctx.lineTo(linesPos[1].line1endX , linesPos[1].line1endY);
+            ctx.stroke();
+
+
+
         }
-    }
+   }
 
 
 })();

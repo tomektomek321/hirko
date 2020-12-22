@@ -3,7 +3,8 @@ var Spell = (function() {
 
 	var spell = {
 		choosen: null,
-		spellsBox: null
+		spellsBox: null,
+		extraData: {},
 	}
 
 	var _getChoosen = function() {
@@ -24,6 +25,14 @@ var Spell = (function() {
 		}
 	}
 
+	var _setExtraData = function(_extra) {
+		spell.extraData = _extra;
+	}
+
+	var _getExtraData = function() {
+		return spell.extraData;
+	}
+
 	var _resetBtns = function() {
 		var existed = document.getElementsByClassName("spellBtn");
 
@@ -38,7 +47,7 @@ var Spell = (function() {
 		_resetBtns();
 
 		for(var i=0; i < spells.length; i++) {
-
+			//console.log(spells);
 			(function(j) {
 
 				var btn = document.createElement("input");
@@ -72,6 +81,8 @@ var Spell = (function() {
 	return {
 		getChoosen: _getChoosen,
 		setChoosen: _setChoosen,
+		setExtraData: _setExtraData,
+		getExtraData: _getExtraData,
         showSpells_Btns: _showSpells_Btns,
         hasSpell: _hasSpell,
 		resetBtns: _resetBtns,
@@ -99,7 +110,70 @@ var Spell = (function() {
 
 				}
 
+			} else if(spell.choosen.name == "doubleBelt") {
+
+
 			}
+
+		},
+
+		createExtraData(ctx, range, charPos, cursorPos) {
+			let matrix = [];
+
+            if(charPos.X - cursorPos.X < 0) {
+                //console.log("+");
+                matrix.push(true);
+            } else {
+                //console.log("-");
+                matrix.push(false);
+            }
+
+            if(charPos.Y - cursorPos.Y > 0) {
+                //console.log("+");
+                matrix.push(true);
+            } else {
+                //console.log("-");
+                matrix.push(false);
+            }
+
+            let shiftX, shiftY;
+            let shiftX2, shiftY2;
+            if(matrix[0] && matrix[1]) {
+                shiftX = (cursorPos.X - 25)
+                shiftX2 = (cursorPos.X + 25);
+
+                shiftY = (cursorPos.Y - 25)
+                shiftY2 = (cursorPos.Y + 25);
+            } else if(matrix[0] && !matrix[1]) {
+                shiftX = (cursorPos.X + 25)
+                shiftX2 = (cursorPos.X - 25);
+
+                shiftY = (cursorPos.Y - 25)
+                shiftY2 = (cursorPos.Y + 25);
+            } else if(!matrix[0] && !matrix[1]) {
+                shiftX = (cursorPos.X + 25)
+                shiftX2 = (cursorPos.X - 25);
+
+                shiftY = (cursorPos.Y + 25)
+                shiftY2 = (cursorPos.Y - 25);
+            } else if(!matrix[0] && matrix[1]) {
+                shiftX = (cursorPos.X + 25)
+                shiftX2 = (cursorPos.X - 25);
+
+                shiftY = (cursorPos.Y - 25)
+                shiftY2 = (cursorPos.Y + 25);
+            }
+
+            spell.extraData = {
+                'char': charPos,
+                'cursor': cursorPos,
+                'linesPos': [
+                    {'line1endX': shiftX, 'line1endY': shiftY},
+                    {'line1endX': shiftX2, 'line1endY': shiftY2},
+                ],
+                'matrix': matrix,
+            }
+
 
 		}
 	}

@@ -1,8 +1,10 @@
 
 
-function char(char_) {
+function char(char_, team) {
 
     this.char = char_;
+
+    this.team = team;
 
     this.state = "norm";
 
@@ -25,9 +27,11 @@ function char(char_) {
 
     this.renderPosition = function(team) {
 
+        let ctx = myGameArea.context;
+
         var color = (team == 1) ? "red" : "blue";
 
-        if(Spell.hasSpell()) {
+        if(Spell.hasSpell() && Spell.getChoosen().name === "fireBall" && !gameController.isCharFromSelectedTeam(this.team)) {
 
             var spell = Spell.getChoosen();
             const { X, Y } = Cursor.getPos();
@@ -43,9 +47,69 @@ function char(char_) {
                 color = "yellow";
             }
 
+        } else if(Spell.hasSpell() && Spell.getChoosen().name === "doubleBelt" && !gameController.isCharFromSelectedTeam(this.team)) {
+
+            let extr = Spell.getExtraData();
+            //console.log(this.char.name);
+
+            let curs = Cursor.getPos();
+
+            for(let i=0; i < extr.linesPos.length; i++) {
+                let cuts = 35;
+
+                let x1 = Math.abs(extr.linesPos[i].line1endX - extr.char.X);
+                let y1 = Math.abs(extr.linesPos[i].line1endY - extr.char.Y);
+
+                let x1cut = x1 / cuts;
+                let y1cut = y1 / cuts;
+
+                for(let j=1; j <= cuts; j++) {
+                    if(j > 34) {
+                        //console.log( extr.char.Y + (y1cut*j) );
+                        //console.log(this.posY);
+                        //console.log("========");
+                    }
+
+                    if(extr.matrix[0] && extr.matrix[1]) { // 1
+                        if((( this.posX <= extr.char.X + (x1cut*j) )) && ((this.posX + this.char.side) > (extr.char.X) + (x1cut*j))  &&
+                        (( this.posY <= extr.char.Y - (y1cut*j) ))  && ((this.posY + this.char.side) > (extr.char.Y) - (y1cut*j))) {
+
+                            console.log("przcina");
+                            color = "yellow";
+                        }
+
+                    } else if(extr.matrix[0] && !extr.matrix[1]) { // prawy dol
+                        if((( this.posX <= extr.char.X + (x1cut*j) )) && ((this.posX + this.char.side) > (extr.char.X) + (x1cut*j))  &&
+                        (( this.posY <= extr.char.Y + (y1cut*j) ))  && ((this.posY + this.char.side) > (extr.char.Y) + (y1cut*j))) {
+
+                            console.log("przcina");
+                            color = "yellow";
+                        }
+                    } else if(!extr.matrix[0] && !extr.matrix[1]) { // lewy dol
+                        if((( this.posX <= extr.char.X - (x1cut*j) )) && ((this.posX + this.char.side) > (extr.char.X) - (x1cut*j))  &&
+                        (( this.posY <= extr.char.Y + (y1cut*j) ))  && ((this.posY + this.char.side) > (extr.char.Y) + (y1cut*j))) {
+
+                            console.log("przcina");
+                            color = "yellow";
+                        }
+                    } else if(!extr.matrix[0] && extr.matrix[1]) { // lewy gora
+                        if((( this.posX <= extr.char.X - (x1cut*j) )) && ((this.posX + this.char.side) > (extr.char.X) - (x1cut*j))  &&
+                        (( this.posY <= extr.char.Y - (y1cut*j) ))  && ((this.posY + this.char.side) > (extr.char.Y) - (y1cut*j))) {
+
+                            console.log("przcina");
+                            color = "yellow";
+                        }
+                    }
+
+
+                }
+
+                View.renderDoubleBelt(ctx);
+            }
+
         }
 
-        let ctx = myGameArea.context;
+
 
         var life = (this.char.life * (this.char.amount - 1)) + this.char.lifeOfLast;
 
@@ -84,7 +148,9 @@ function char(char_) {
         }
 
         if(this.canThrow() && this.char.nowAttack['range'] != null) {
-            View.renderThrowRangeFraction(ctx, this.char.nowAttack['range'], Cursor.getPos());
+            //View.renderThrowRangeFraction(ctx, this.char.nowAttack['range'], Cursor.getPos());
+            Spell.setChoosen({'name': "doubleBelt"});
+            Spell.createExtraData(ctx, this.char.nowAttack['range'], this.getPosition(), Cursor.getPos());
         }
 
     }
@@ -203,6 +269,14 @@ function char(char_) {
 
     this.getSettedSpells = function() {
         return this.spellsUpon;
+    }
+
+    this.getTeam = function() {
+        return this.team;
+    }
+
+    this.setTeam = function(team) {
+        this.team = team
     }
 }
 
