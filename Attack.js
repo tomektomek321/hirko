@@ -12,54 +12,59 @@ var Attack = (function() {
         defaultAttack(attacker, enemy) {
 
 
-            var length = attacker.getAmount();
+            return new Promise((resolve, reject) => {
 
-            var damage;
+                var length = attacker.getAmount();
 
-
-            damage = attacker.getDamage();
-
-
-            var totalDemage = damage * length;
-
-            var def = enemy.getLife();
+                var damage;
 
 
-            var lastDef = enemy.getLifeOfLast();
-            var totalDef = (def * (enemy.getAmount() - 1)) + lastDef;
+                damage = attacker.getDamage();
 
-            var newAmount, modul;
-            if(totalDemage > totalDef) {
 
-                enemy.makeDead();
+                var totalDemage = damage * length;
 
-            } else {
+                var def = enemy.getLife();
 
-                if(totalDemage > lastDef) {
 
-                    totalDef = totalDef - totalDemage;
+                var lastDef = enemy.getLifeOfLast();
+                var totalDef = (def * (enemy.getAmount() - 1)) + lastDef;
 
-                    modul = totalDef % def
+                var newAmount, modul;
+                if(totalDemage > totalDef) {
 
-                    newAmount = totalDef / def;
-                    newAmount = newAmount.toFixed();
-                    newAmount = parseInt(newAmount);
+                    enemy.makeDead();
+                    resolve("OK2");
 
                 } else {
 
-                    totalDef = totalDef - totalDemage;
+                    if(totalDemage > lastDef) {
 
-                    modul = totalDef % def;
+                        totalDef = totalDef - totalDemage;
 
-                    newAmount = enemy.getAmount();
+                        modul = totalDef % def
 
+                        newAmount = totalDef / def;
+                        newAmount = newAmount.toFixed();
+                        newAmount = parseInt(newAmount);
+
+                    } else {
+
+                        totalDef = totalDef - totalDemage;
+
+                        modul = totalDef % def;
+
+                        newAmount = enemy.getAmount();
+
+                    }
+
+
+                    enemy.setAmount(newAmount);
+
+                    enemy.setLifeOfLast(modul);
+                    resolve("OK2");
                 }
-
-
-                enemy.setAmount(newAmount);
-
-                enemy.setLifeOfLast(modul);
-            }
+			});
 
         }
     }

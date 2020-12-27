@@ -58,98 +58,106 @@ var Move = (function() {
 
         },
 
-		moveTo(char, hoveredChar, callback) {
+		moveTo(char, hoveredChar) {
 
-			const {X , Y} = Cursor.getPos();
-			console.log(X, Y);
+			return new Promise((resolve, reject) => {
 
-			var aim_char = hoveredChar;
+				const {X , Y} = Cursor.getPos();
+				console.log(X, Y);
 
-			var aim_pos = hoveredChar.getXY();
+				var aim_char = hoveredChar;
 
-			var sel_pos = char.getXY();
+				var aim_pos = hoveredChar.getXY();
 
-			var moveArea = char.getMoveArea();
+				var sel_pos = char.getXY();
 
-			var z = Math.floor(Math.sqrt(Math.pow(X - sel_pos.X, 2) + Math.pow(Y - sel_pos.Y, 2)));
+				var moveArea = char.getMoveArea();
 
-			if(z > moveArea) { console.log("Nie mozna tak daleko"); return; }
+				var z = Math.floor(Math.sqrt(Math.pow(X - sel_pos.X, 2) + Math.pow(Y - sel_pos.Y, 2)));
 
-			var x_len = (aim_pos.X - sel_pos.X) / 70;
-			var y_len = (aim_pos.Y - sel_pos.Y) / 70;
+				if(z > moveArea) { console.log("Nie mozna tak daleko"); reject("nieOK1"); return; }
 
-			var next_posX = sel_pos.X;
-			var next_posY = sel_pos.Y;
-			var cl = 1;
+				var x_len = (aim_pos.X - sel_pos.X) / 70;
+				var y_len = (aim_pos.Y - sel_pos.Y) / 70;
 
-			var intervalek = setInterval(function() {
-				cl++;
+				var next_posX = sel_pos.X;
+				var next_posY = sel_pos.Y;
+				var cl = 1;
 
-
-				char.setPosition(next_posX, next_posY);
-
-				var height = char.getSide();
-
-				updateGameArea();
-
-				if((next_posY + height + 3 > aim_pos.Y && next_posY < aim_pos.Y + aim_char.getSide() + 3) &&
-					(next_posX + height + 3 > aim_pos.X && next_posX < aim_pos.X + aim_char.getSide() + 3) ) {
-					callback();
-					clearInterval(intervalek);
-				}
-
-				if(cl > 160) {clearInterval(intervalek);}
+				var intervalek = setInterval(function() {
+					cl++;
 
 
-				next_posX = next_posX + x_len;
-				next_posY = next_posY + y_len;
+					char.setPosition(next_posX, next_posY);
+
+					var height = char.getSide();
+
+					updateGameArea();
+
+					if((next_posY + height + 3 > aim_pos.Y && next_posY < aim_pos.Y + aim_char.getSide() + 3) &&
+						(next_posX + height + 3 > aim_pos.X && next_posX < aim_pos.X + aim_char.getSide() + 3) ) {
+
+						resolve("ok1");
+						clearInterval(intervalek);
+					}
+
+					if(cl > 160) {clearInterval(intervalek);resolve("ok1");}
 
 
-			}, 25);
+					next_posX = next_posX + x_len;
+					next_posY = next_posY + y_len;
+
+
+				}, 25);
+
+			});
 
 		},
 
 
 
-		throw(char, aim_char, callback) {
-			//console.log(arguments);
-			var {X, Y} = aim_char.getXY();
+		throw(char, aim_char) {
 
-			var sel_pos = char.getXY();
+			return new Promise((resolve, reject) => {
 
-			var x_len = (X - sel_pos.X) / divide_interv;
-			var y_len = (Y - sel_pos.Y) / divide_interv;
+				var {X, Y} = aim_char.getXY();
 
-			var next_posX = sel_pos.X;
-			var next_posY = sel_pos.Y;
-			var cl = 1;
+				var sel_pos = char.getXY();
 
-			//is_animation = true;
+				var x_len = (X - sel_pos.X) / divide_interv;
+				var y_len = (Y - sel_pos.Y) / divide_interv;
 
-			var intervalek = setInterval(function() {
+				var next_posX = sel_pos.X;
+				var next_posY = sel_pos.Y;
+				var cl = 1;
 
+				//is_animation = true;
 
-				Bullet.setPos(next_posX, next_posY);
-
-				var height = char.getSide();
-
-				if((next_posY + height > Y && next_posY < Y + aim_char.getSide()) &&
-					(next_posX + height > X && next_posX < X + aim_char.getSide()) ) {
-						Bullet.resetThrow();
-						callback();
-						clearInterval(intervalek);
-				}
-
-				if(cl > 160) {clearInterval(intervalek);} cl++;
-
-				updateGameArea();
-
-				next_posX = next_posX + x_len;
-				next_posY = next_posY + y_len;
+				var intervalek = setInterval(function() {
 
 
-			}, 5);
+					Bullet.setPos(next_posX, next_posY);
 
+					var height = char.getSide();
+
+					if((next_posY + height > Y && next_posY < Y + aim_char.getSide()) &&
+						(next_posX + height > X && next_posX < X + aim_char.getSide()) ) {
+							Bullet.resetThrow();
+							resolve("OK1")
+							clearInterval(intervalek);
+					}
+
+					if(cl > 160) {clearInterval(intervalek);} cl++;
+
+					updateGameArea();
+
+					next_posX = next_posX + x_len;
+					next_posY = next_posY + y_len;
+
+
+				}, 5);
+
+			});
 		}
 
     }

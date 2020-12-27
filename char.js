@@ -202,7 +202,18 @@ function char(char_, team) {
     }
 
     this.getDamage = function() {
-        return (this.spellsUpon.includes("halfDamage")) ? this.char.demage / 2 : this.char.demage;
+        let tempDmg = this.char.demage;
+
+        let x = Spell.getChoosen();
+        console.log(x);
+
+
+        if(this.char.nowAttack['range'] != null) {
+            tempDmg = tempDmg * this.char.nowAttack['range'];
+        }
+        tempDmg =  (this.spellsUpon.includes("halfDamage")) ? tempDmg / 2 : tempDmg;
+        console.log(tempDmg);
+        return tempDmg;
     }
 
     this.getLife = function() {

@@ -114,12 +114,10 @@ return {
 
 
 			} else if(Spell.getChoosen().name == "throw") {
-				var selected_enemy = hoveredChar;
 
-				Move.throw(chars[team][char_selected], selected_enemy, function() {
+				this.throwAction();
+				return;
 
-					Attack.defaultAttack(chars[team][char_selected], selected_enemy);
-				});
 			} else {
 
 				for(var i = 0; i < chars[oponent].length; i++) {
@@ -149,14 +147,7 @@ return {
 			if(selected_enemy.team == team) { // click on own team
 				return;
 			} else {
-				var _t = this;
-
-				console.log(2);
-				Move.moveTo(chars[team][char_selected], selected_enemy, function() {
-
-					Attack.defaultAttack(chars[team][char_selected], selected_enemy);
-					_t.next_character();
-				})
+				this.goCloseAndAttack();
 
 			}
 
@@ -188,7 +179,39 @@ return {
 		Spell.renderSpell();
 
 
-	}
+	},
+
+	throwAction() {
+
+		var selected_enemy = hoveredChar;
+
+		Move.throw(chars[team][char_selected], selected_enemy)
+			.then(res => {
+				console.log(res);
+				return Attack.defaultAttack(chars[team][char_selected], selected_enemy);
+			})
+			.then(res => {
+				console.log(res);
+				Spell.resetSpell();
+				Spell.resetBtns();
+				this.next_character();
+				updateGameArea();
+			});
+	},
+
+	goCloseAndAttack() {
+
+		var _t = this;
+		var selected_enemy = hoveredChar;
+
+		Move.moveTo(chars[team][char_selected], selected_enemy)
+		.then(res => {
+			return Attack.defaultAttack(chars[team][char_selected], selected_enemy);
+		})
+		.then(res => {
+			_t.next_character();
+		})
+	},
 
 
 
