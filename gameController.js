@@ -7,6 +7,24 @@ var team = 1;
 var char_selected = 0;
 var hoveredChar = null;
 
+showSpells_Btns = function() {
+
+	let spells;
+	if(chars[team][char_selected].canSpell()) {
+		spells = chars[team][char_selected].getSpells();
+		///*let sp1 = */spells.unshift({'name': 'move/attack'});
+
+		var spellki = [{'name': 'move/attack'}, ...spells];
+
+		//console.log(spellki);
+		Spell.showSpells_Btns(spellki);
+	} else if(chars[team][char_selected].canThrow()) {
+		spells = [ {'name': 'move/attack'}, {'name': 'throw'} ];
+		Spell.showSpells_Btns(spells);
+	}
+
+}
+
 return {
 
 	endGame() {
@@ -30,7 +48,7 @@ return {
 		team = odp[1];
 
 		InfoBox.setSelectedChar(chars[team][char_selected]);
-
+		showSpells_Btns();
 		updateGameArea();
 
 	},
@@ -70,11 +88,38 @@ return {
 	actionCharacter() {
 		if(Spell.hasSpell()) { // click while using spell
 			var oponent = (team == 1) ? 2 : 1;
+			let noUpdate = false;
 
-			if(Spell.getChoosen().name == "halfMove" || Spell.getChoosen().name == "halfDamage") {
+			if(Spell.getChoosen().name == "regeneration") {
+				let countRegenerate = Regenerate.countRegenerate(char_selected, team);
+				console.log(countRegenerate);
 
-				hoveredChar.setSpell(Spell.getChoosen().name);
+				hoveredChar.setSpell({...Spell.getChoosen(), "lifePerRound": countRegenerate});
 
+
+
+
+			} else if(Spell.getChoosen().name == "halfMove"
+						|| Spell.getChoosen().name == "halfDamage"
+						|| Spell.getChoosen().name == "roundPause") {
+
+				console.log(Spell.getChoosen());
+
+				if(hoveredChar.hasSpellUpon(Spell.getChoosen())) {
+					noUpdate = true;
+				} else {
+					hoveredChar.setSpell(Spell.getChoosen());
+				}
+
+
+
+			} else if(Spell.getChoosen().name == "throw") {
+				var selected_enemy = hoveredChar;
+
+				Move.throw(chars[team][char_selected], selected_enemy, function() {
+
+					Attack.defaultAttack(chars[team][char_selected], selected_enemy);
+				});
 			} else {
 
 				for(var i = 0; i < chars[oponent].length; i++) {
@@ -88,9 +133,12 @@ return {
 				}
 			}
 
-			Spell.resetSpell();
-			Spell.resetBtns();
-			this.next_character();
+			if(!noUpdate) {
+				Spell.resetSpell();
+				Spell.resetBtns();
+				this.next_character();
+			}
+
 			updateGameArea();
 
 		} else if(hoveredChar == null) { // move
@@ -98,28 +146,17 @@ return {
 		} else {
 			var selected_enemy = hoveredChar;
 
-			if(selected_enemy.team == team) {
+			if(selected_enemy.team == team) { // click on own team
 				return;
 			} else {
 				var _t = this;
 
-				if(chars[team][char_selected].canThrow()) {
+				console.log(2);
+				Move.moveTo(chars[team][char_selected], selected_enemy, function() {
 
-					Move.throw(chars[team][char_selected], selected_enemy, function() {
-
-						Attack.defaultAttack(chars[team][char_selected], selected_enemy);
-						_t.next_character();
-					})
-
-				} else {
-
-					Move.moveTo(chars[team][char_selected], selected_enemy, function() {
-
-						Attack.defaultAttack(chars[team][char_selected], selected_enemy);
-						_t.next_character();
-					})
-
-				}
+					Attack.defaultAttack(chars[team][char_selected], selected_enemy);
+					_t.next_character();
+				})
 
 			}
 
@@ -134,26 +171,17 @@ return {
 
 	setThrowRangeFraction() {
 
-		if(chars[team][char_selected].canThrow()) {
+		if(chars[team][char_selected].canThrow() && Spell.getChoosen() != null && Spell.getChoosen()['name'] === "throw") {
 			chars[team][char_selected].setThrowRange_Fraction(Cursor.getPos());
 		}
 
 	},
 
-	showSpells_Btns() {
-		let spells;
-		if(chars[team][char_selected].canSpell()) {
-			spells = chars[team][char_selected].getSpells();
-
-			Spell.showSpells_Btns(spells);
-		} else if(chars[team][char_selected].canThrow()) {
-			spells = [{'name': 'throw'}, {'name': 'normal hit'}];
-			Spell.showSpells_Btns(spells);
-		}
-
-
-
+	renderRangeFraction() {
+		chars[team][char_selected].renderRangeFraction();
 	},
+
+
 
 	renderSpell() {
 

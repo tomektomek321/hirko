@@ -32,7 +32,7 @@ var InfoBox = (function() {
                     "spells Upon: " +  charSel.spellsUpon + "<br />";
 
                 if(Spell.getChoosen() !== null) {
-                    box.innerHTML += "spell choosen: " +  Spell.getChoosen()['name'] + "<br />";
+                    box.innerHTML += "SPELL CHOOSEN: <br /> " +  Spell.getChoosen()['name'] + "<br />";
                 }
 
             }

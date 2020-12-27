@@ -17,8 +17,9 @@ var Spell = (function() {
 		spell.choosen = null;
     }
 
-    var _setChoosen = function(spell_) {	// spell makes recursion xD
-		if(spell_.name == "normal hit") {
+    var _setChoosen = function(spell_) {
+		console.log(spell_);	// spell makes recursion xD
+		if(spell_.name == "move/attack") {
 			spell.choosen = null;
 		} else {
 			spell.choosen = spell_;

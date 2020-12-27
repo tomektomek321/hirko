@@ -28,11 +28,6 @@ var Move = (function() {
 			var x_len = (pos.X - start_pos.X) / divide_interv;
             var y_len = (pos.Y - start_pos.Y) / divide_interv;
 
-
-            console.log(x_len);
-            console.log(y_len);
-
-
 			var next_posX = start_pos.X;
             var next_posY = start_pos.Y;
 
@@ -117,7 +112,7 @@ var Move = (function() {
 
 
 		throw(char, aim_char, callback) {
-
+			//console.log(arguments);
 			var {X, Y} = aim_char.getXY();
 
 			var sel_pos = char.getXY();

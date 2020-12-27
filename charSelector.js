@@ -10,10 +10,15 @@ var CharSelector = (function() {
 
     return {
 
-        selectChar(chars_, char_selected, team, callback) {
+        selectChar(chars_, char_selected, team) {
 
 			var insur = 0;
 			var found = false;
+
+			let nowSelectedChar = char_selected;
+			let nowSelectedTeam = team;
+			console.log(nowSelectedChar);
+			console.log(nowSelectedTeam);
 
 			char_selected++;
 
@@ -33,7 +38,18 @@ var CharSelector = (function() {
 					char_selected++;
 					continue;
 				} else {
-					found = true;
+					if(chars_[team][char_selected].hasSpellUpon({"name": "regeneration"})) {
+						chars_[team][char_selected].regenerate();
+					}
+
+					if(chars_[team][char_selected].hasSpellUpon({"name": "roundPause"})) {
+						chars_[team][char_selected].removeSpellUpon({"name": "roundPause"});
+						char_selected++;
+						continue;
+					} else {
+						found = true;
+					}
+
 				}
 
 				if(!found)

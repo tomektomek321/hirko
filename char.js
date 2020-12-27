@@ -147,12 +147,18 @@ function char(char_, team) {
             this.char.nowAttack['range'] = 0.25;
         }
 
-        if(this.canThrow() && this.char.nowAttack['range'] != null) {
+        if(this.canThrow()/* && this.char.nowAttack['range'] != null*/) {
             //View.renderThrowRangeFraction(ctx, this.char.nowAttack['range'], Cursor.getPos());
-            Spell.setChoosen({'name': "doubleBelt"});
+            //Spell.setChoosen({'name': "doubleBelt"});
             Spell.createExtraData(ctx, this.char.nowAttack['range'], this.getPosition(), Cursor.getPos());
         }
 
+    }
+
+    this.renderRangeFraction = function() {
+        if(Spell.getChoosen() != null && Spell.getChoosen()['name'] === "throw" && this.char.nowAttack['range'] != null) {
+            View.renderThrowRangeFraction(ctx, this.char.nowAttack['range'], Cursor.getPos());
+        }
     }
 
     this.isReachedBySpell = function(spell, {X, Y}) {
@@ -259,12 +265,39 @@ function char(char_, team) {
         return this.char.magic;
     }
 
+    this.hasSpellUpon = function(spell) {
+        //console.log(typeof(spell));
+        if(typeof(spell) == 'object') {
+            let x = this.spellsUpon.find(spell_ => spell_.name === spell.name);
+            return (x !== undefined) ? true : false;
+        } else {
+            let x = this.spellsUpon.find(spell_ => spell_.name === spell);
+            return (x !== undefined) ? true : false;
+        }
+    }
+
+    this.removeSpellUpon = function(spell) {
+
+        if(this.hasSpellUpon(spell)) {
+            this.spellsUpon = this.spellsUpon.filter(spell_ => spell_.name !== spell.name);
+            return "success";
+        } else {
+            return "no_such_spellUpon";
+        }
+    }
+
     this.getSelectedSpell = function() {
         return null;
     }
 
     this.setSpell = function(spell) {
-        this.spellsUpon.push(spell);
+
+        if(!this.hasSpellUpon(spell)) {
+            this.spellsUpon.push(spell);
+            //console.log(this.spellsUpon);
+        } else {
+            console.log("ALREADY SPELLED");
+        }
     }
 
     this.getSettedSpells = function() {
@@ -277,6 +310,20 @@ function char(char_, team) {
 
     this.setTeam = function(team) {
         this.team = team
+    }
+
+    this.regenerate = function() {
+        Regenerate.makeRegenerate(this);
+    }
+
+    this.getStartAmount = function() {
+        return this.char.startAmount;
+    }
+
+    this.getRegenerateAmount = function() {
+        let x = this.spellsUpon.filter(sp => sp.name === "regeneration");
+        console.log(x);
+        return x[0]['lifePerRound'];
     }
 }
 

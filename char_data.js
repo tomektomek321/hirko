@@ -11,6 +11,7 @@ function giermek(amount) {
     this.demage = 5;
     this.throw = false;
     this.amount = amount;
+    this.startAmount = amount;
     this.nowAttack = {};
 }
 
@@ -24,6 +25,7 @@ function dragon(amount) {
     this.demage = 50;
     this.throw = false;
     this.amount = amount;
+    this.startAmount = amount;
     this.nowAttack = {};
 }
 
@@ -38,6 +40,7 @@ function elf(amount) {
     this.throw = true;
     this.throwRange = 200;
     this.amount = amount;
+    this.startAmount = amount;
     this.nowAttack = {};
 }
 
@@ -53,6 +56,7 @@ function mag(amount) {
     this.demage = 25;
     this.throw = false;
     this.amount = amount;
+    this.startAmount = amount;
     this.nowAttack = {};
 
 
@@ -79,6 +83,12 @@ function mag(amount) {
         }, {
             'name': 'doubleThrow',
             'disc': 'the char upon its spelled throws double belt',
+        }, {
+            'name': 'roundPause',
+            'disc': 'the char upon its spelled has 1 round pause',
+        }, {
+            'name': 'regeneration',
+            'disc': 'the char upon its spelled regenerates some life per round',
         },
 
 
