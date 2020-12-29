@@ -51,7 +51,7 @@ function mag(amount) {
     this.name = "mag";
     this.life = 50;
     this.lifeOfLast = 50;
-    this.moveArea = 100;
+    this.moveArea = 400;
     this.side = 15;
     this.demage = 25;
     this.throw = false;
@@ -64,7 +64,7 @@ function mag(amount) {
         {
             'name': 'nova',
             'disc': 'create a nova that hits everyone in area of 40px',
-            'range': 40,
+            'range': 115,
             'damage': 50
         }, {
             'name': 'fireBall',

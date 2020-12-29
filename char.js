@@ -45,12 +45,14 @@ function char(char_, team) {
             if((area.X + area.side + 3 >= this.posX && area.X <= this.posX + this.char.side) &&
                     (area.Y + area.side + 3 >= this.posY && area.Y <= this.posY + this.char.side)) {
                 color = "yellow";
+
+                this.setSpell("fireBall");
+
             }
 
         } else if(Spell.hasSpell() && Spell.getChoosen().name === "doubleBelt" && !gameController.isCharFromSelectedTeam(this.team)) {
 
             let extr = Spell.getExtraData();
-            //console.log(this.char.name);
 
             let curs = Cursor.getPos();
 
@@ -64,11 +66,6 @@ function char(char_, team) {
                 let y1cut = y1 / cuts;
 
                 for(let j=1; j <= cuts; j++) {
-                    if(j > 34) {
-                        //console.log( extr.char.Y + (y1cut*j) );
-                        //console.log(this.posY);
-                        //console.log("========");
-                    }
 
                     if(extr.matrix[0] && extr.matrix[1]) { // 1
                         if((( this.posX <= extr.char.X + (x1cut*j) )) && ((this.posX + this.char.side) > (extr.char.X) + (x1cut*j))  &&
@@ -107,9 +104,39 @@ function char(char_, team) {
                 View.renderDoubleBelt(ctx);
             }
 
+        } else if(Spell.hasSpell() && Spell.getChoosen().name === "nova"/* && !gameController.isCharFromSelectedTeam(this.team)*/) {
+
+            var selPos = gameController.getSelectedChar().getPosition();
+
+            var thisXY = this.getXY();
+            let span = this.getSide();
+
+            let spanDivided = Math.floor(span / 5);
+
+            let points = [];
+
+            for(let i=0; i < 5; i++) {
+
+                for (let j = 0; j < 5; j++) {
+
+                    let b = Math.floor(thisXY['X'] + (j * spanDivided));
+                    let y = Math.floor(thisXY['Y'] + (i * spanDivided));
+
+                    points.push({'X': b, "Y": y});
+                }
+            }
+
+            let moveArea = Nova.getRange();
+            let _t = this;
+            for(let i=0; i < points.length; i++) {
+                var z = Math.floor(Math.sqrt(Math.pow(points[i].X - selPos.X, 2) + Math.pow(points[i].Y - selPos.Y, 2)));
+
+                if(z < moveArea) {
+                    color = "yellow";
+                    this.setSpell({"name": "nova"});
+                }
+            }
         }
-
-
 
         var life = (this.char.life * (this.char.amount - 1)) + this.char.lifeOfLast;
 
@@ -147,9 +174,7 @@ function char(char_, team) {
             this.char.nowAttack['range'] = 0.25;
         }
 
-        if(this.canThrow()/* && this.char.nowAttack['range'] != null*/) {
-            //View.renderThrowRangeFraction(ctx, this.char.nowAttack['range'], Cursor.getPos());
-            //Spell.setChoosen({'name': "doubleBelt"});
+        if(this.canThrow()) {
             Spell.createExtraData(ctx, this.char.nowAttack['range'], this.getPosition(), Cursor.getPos());
         }
 
@@ -162,6 +187,15 @@ function char(char_, team) {
     }
 
     this.isReachedBySpell = function(spell, {X, Y}) {
+
+        if(spell.name == "nova") {
+
+            if(this.hasSpellUpon("nova")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
         var rectArea = {
             'X': X - spell.range,
@@ -205,14 +239,12 @@ function char(char_, team) {
         let tempDmg = this.char.demage;
 
         let x = Spell.getChoosen();
-        console.log(x);
-
 
         if(this.char.nowAttack['range'] != null) {
             tempDmg = tempDmg * this.char.nowAttack['range'];
         }
         tempDmg =  (this.spellsUpon.includes("halfDamage")) ? tempDmg / 2 : tempDmg;
-        console.log(tempDmg);
+
         return tempDmg;
     }
 
@@ -277,7 +309,7 @@ function char(char_, team) {
     }
 
     this.hasSpellUpon = function(spell) {
-        //console.log(typeof(spell));
+
         if(typeof(spell) == 'object') {
             let x = this.spellsUpon.find(spell_ => spell_.name === spell.name);
             return (x !== undefined) ? true : false;
@@ -305,7 +337,7 @@ function char(char_, team) {
 
         if(!this.hasSpellUpon(spell)) {
             this.spellsUpon.push(spell);
-            //console.log(this.spellsUpon);
+
         } else {
             console.log("ALREADY SPELLED");
         }
@@ -333,7 +365,6 @@ function char(char_, team) {
 
     this.getRegenerateAmount = function() {
         let x = this.spellsUpon.filter(sp => sp.name === "regeneration");
-        console.log(x);
         return x[0]['lifePerRound'];
     }
 }

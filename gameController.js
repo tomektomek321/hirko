@@ -118,6 +118,24 @@ return {
 				this.throwAction();
 				return;
 
+			} else if(Spell.getChoosen().name == "nova") {
+
+				for(var i = 0; i < chars[oponent].length; i++) {
+
+					var tempChar = chars[oponent][i];
+
+					if(chars[oponent][i].isReachedBySpell(Spell.getChoosen(), Cursor.getPos())) {
+						Attack.defaultAttack(chars[team][char_selected], tempChar)
+					}
+				}
+
+				Spell.resetSpell();
+				Spell.resetBtns();
+				this.next_character();
+				updateGameArea();
+
+				return;
+
 			} else {
 
 				for(var i = 0; i < chars[oponent].length; i++) {
@@ -132,6 +150,7 @@ return {
 			}
 
 			if(!noUpdate) {
+				console.log("bb");
 				Spell.resetSpell();
 				Spell.resetBtns();
 				this.next_character();
@@ -179,6 +198,10 @@ return {
 		Spell.renderSpell();
 
 
+	},
+
+	renderSpellsAbove() {
+		Spell.renderSpellsAbove();
 	},
 
 	throwAction() {

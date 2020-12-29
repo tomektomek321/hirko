@@ -19,6 +19,16 @@ var Spell = (function() {
 
     var _setChoosen = function(spell_) {
 		console.log(spell_);	// spell makes recursion xD
+
+		if(spell_.name == "nova") {
+			Nova.createExtraData(
+				{
+					"range": spell_.range,
+					"damage": spell_.damage,
+				}
+			)
+		}
+
 		if(spell_.name == "move/attack") {
 			spell.choosen = null;
 		} else {
@@ -111,8 +121,26 @@ var Spell = (function() {
 
 				}
 
-			} else if(spell.choosen.name == "doubleBelt") {
+			} else if(spell.choosen.name == "nova") {
 
+			}
+
+		},
+
+
+		renderSpellsAbove() {
+			if(spell.choosen == null) return;
+
+			if(spell.choosen.name == "nova") {
+
+				let char = gameController.getSelectedChar();
+
+				ctx.beginPath();
+				ctx.arc(char.centerXChar, char.centerYChar, 115, 0, 2 * Math.PI);
+				ctx.fillStyle = "#7CB9E8";
+				ctx.fill();
+				ctx.strokeStyle = "#4B5320";
+				ctx.stroke();
 
 			}
 
@@ -122,18 +150,14 @@ var Spell = (function() {
 			let matrix = [];
 
             if(charPos.X - cursorPos.X < 0) {
-                //console.log("+");
                 matrix.push(true);
             } else {
-                //console.log("-");
                 matrix.push(false);
             }
 
             if(charPos.Y - cursorPos.Y > 0) {
-                //console.log("+");
                 matrix.push(true);
             } else {
-                //console.log("-");
                 matrix.push(false);
             }
 
