@@ -7,25 +7,26 @@ var team = 1;
 var char_selected = 0;
 var hoveredChar = null;
 
-showSpells_Btns = function() {
 
-	let spells;
-	if(chars[team][char_selected].canSpell()) {
-		spells = chars[team][char_selected].getSpells();
-		///*let sp1 = */spells.unshift({'name': 'move/attack'});
-
-		var spellki = [{'name': 'move/attack'}, ...spells];
-
-		//console.log(spellki);
-		Spell.showSpells_Btns(spellki);
-	} else if(chars[team][char_selected].canThrow()) {
-		spells = [ {'name': 'move/attack'}, {'name': 'throw'} ];
-		Spell.showSpells_Btns(spells);
-	}
-
-}
 
 return {
+
+	showSpells_Btns() {
+
+		let spells;
+		if(chars[team][char_selected].canSpell()) {
+			spells = chars[team][char_selected].getSpells();
+
+			var spellki = [{'name': 'move/attack'}, ...spells];
+
+			//console.log(spellki);
+			Spell.showSpells_Btns(spellki);
+		} else if(chars[team][char_selected].canThrow()) {
+			spells = [ {'name': 'move/attack'}, {'name': 'throw'} ];
+			Spell.showSpells_Btns(spells);
+		}
+
+	},
 
 	endGame() {
 		View.endGame();
@@ -43,7 +44,7 @@ return {
 		Spell.resetBtns();
 		Spell.resetSpell();
 
-		var odp = CharSelector.selectChar(chars, char_selected, team);
+		var odp = CharsManager.selectChar(chars, char_selected, team);
 		char_selected = odp[0];
 		team = odp[1];
 
@@ -87,79 +88,19 @@ return {
 
 	actionCharacter() {
 		if(Spell.hasSpell()) { // click while using spell
-			var oponent = (team == 1) ? 2 : 1;
-			let noUpdate = false;
 
-			if(Spell.getChoosen().name == "regeneration") {
-				let countRegenerate = Regenerate.countRegenerate(char_selected, team);
-				console.log(countRegenerate);
-
-				hoveredChar.setSpell({...Spell.getChoosen(), "lifePerRound": countRegenerate});
-
-
-
-
-			} else if(Spell.getChoosen().name == "halfMove"
-						|| Spell.getChoosen().name == "halfDamage"
-						|| Spell.getChoosen().name == "roundPause") {
-
-				console.log(Spell.getChoosen());
-
-				if(hoveredChar.hasSpellUpon(Spell.getChoosen())) {
-					noUpdate = true;
-				} else {
-					hoveredChar.setSpell(Spell.getChoosen());
-				}
-
-
-
-			} else if(Spell.getChoosen().name == "throw") {
-
-				this.throwAction();
-				return;
-
-			} else if(Spell.getChoosen().name == "nova") {
-
-				for(var i = 0; i < chars[oponent].length; i++) {
-
-					var tempChar = chars[oponent][i];
-
-					if(chars[oponent][i].isReachedBySpell(Spell.getChoosen(), Cursor.getPos())) {
-						Attack.defaultAttack(chars[team][char_selected], tempChar)
+			SpellAction.spellAction(team, char_selected, hoveredChar)
+				.then(res => {
+					console.log(res);
+					if(res == "nextChar") {
+						this.next_character();
+					} else {
+						this.throwAction();
 					}
-				}
-
-				Spell.resetSpell();
-				Spell.resetBtns();
-				this.next_character();
-				updateGameArea();
-
-				return;
-
-			} else {
-
-				for(var i = 0; i < chars[oponent].length; i++) {
-
-					var tempChar = chars[oponent][i];
-
-					if(chars[oponent][i].isReachedBySpell(Spell.getChoosen(), Cursor.getPos())) {
-
-						Attack.defaultAttack(chars[team][char_selected], tempChar);
-					}
-				}
-			}
-
-			if(!noUpdate) {
-				console.log("bb");
-				Spell.resetSpell();
-				Spell.resetBtns();
-				this.next_character();
-			}
-
-			updateGameArea();
+				})
 
 		} else if(hoveredChar == null) { // move
-			Move.makeMove(chars[team][char_selected], Cursor.getPos(), this.next_character);
+			Move.makeMove(chars[team][char_selected], Cursor.getPos(), this.next_character, this.throwAction);
 		} else {
 			var selected_enemy = hoveredChar;
 

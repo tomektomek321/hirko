@@ -27,7 +27,9 @@ function char(char_, team) {
 
     this.renderPosition = function(team) {
 
-        let ctx = myGameArea.context;
+        CharAction.renderAction(team, this);
+
+        /*let ctx = myGameArea.context;
 
         var color = (team == 1) ? "red" : "blue";
 
@@ -104,7 +106,7 @@ function char(char_, team) {
                 View.renderDoubleBelt(ctx);
             }
 
-        } else if(Spell.hasSpell() && Spell.getChoosen().name === "nova"/* && !gameController.isCharFromSelectedTeam(this.team)*/) {
+        } else if(Spell.hasSpell() && Spell.getChoosen().name === "nova"/* && !gameController.isCharFromSelectedTeam(this.team)/) {
 
             var selPos = gameController.getSelectedChar().getPosition();
 
@@ -141,7 +143,7 @@ function char(char_, team) {
         var life = (this.char.life * (this.char.amount - 1)) + this.char.lifeOfLast;
 
         View.render_char(ctx, this.posX, this.posY, this.char.side, color);
-        View.render_charInfo(ctx, life, this.posX, this.posY, this.char.name, this.char.amount, this.char.demage);
+        View.render_charInfo(ctx, life, this.posX, this.posY, this.char.name, this.char.amount, this.char.demage);*/
 
     }
 
@@ -336,8 +338,7 @@ function char(char_, team) {
     this.setSpell = function(spell) {
 
         if(!this.hasSpellUpon(spell)) {
-            this.spellsUpon.push(spell);
-
+            this.spellsUpon.push((typeof(spell) == 'object' ? spell : {'name': spell }));
         } else {
             console.log("ALREADY SPELLED");
         }

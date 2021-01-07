@@ -8,8 +8,11 @@
 		<link rel="stylesheet" href='ext_libs/bootstrap/css/bootstrap.min.css'>
 		<script src='ext_libs/bootstrap/js/bootstrap.min.js'></script>
 		<link rel="stylesheet" href='basic.css'>
+		<script src='GameListener.js'></script>
 		<script src='InfoBox.js'></script>
 		<script src='Spells/Regenerate.js'></script>
+		<script src='Actions/SpellAction.js'></script>
+		<script src='Actions/CharAction.js'></script>
 		<script src='Spells/Nova.js'></script>
 		<script src='Bullet.js'></script>
 		<script src='Spell.js'></script>
@@ -18,7 +21,7 @@
 		<script src='char.js'></script>
 		<script src='cursor.js'></script>
 		<script src='move.js'></script>
-		<script src='charSelector.js'></script>
+		<script src='CharsManager.js'></script>
 		<script src='char_data.js'></script>
         <script src='gameController.js'></script>
 
@@ -155,7 +158,7 @@
 
 
 	myGameArea.canvas.addEventListener('click', function(event) {
-		gameController.actionCharacter();
+		gameListener.actionCharacter();
 
 		/*var x = event.pageX - elemLeft,
 	        y = event.pageY - elemTop - 7;
@@ -171,8 +174,8 @@
 
 		Cursor.setPos(x, y);
 
-		gameController.setThrowRangeFraction();
-		gameController.checkHover();
+		//gameListener.setThrowRangeFraction();
+		gameListener.checkHover();
 
 	}, false);
 

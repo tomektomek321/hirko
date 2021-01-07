@@ -1,6 +1,12 @@
 
 
-var CharSelector = (function() {
+var CharsManager = (function() {
+
+	var team = 1;
+
+	var char_selected = 0;
+
+	var hoveredChar = null;
 
     var _getPos = function() {
         return pos;
@@ -9,6 +15,39 @@ var CharSelector = (function() {
 
 
     return {
+
+		getSelectedChar() {
+			return chars[team][char_selected];
+		},
+
+		checkHover() {
+
+			for(var i=1; i < chars.length; i++) {
+
+				for(var j=0; j < chars[i].length; j++) {
+
+					if(chars[i][j].isHover(Cursor.getPos())) {
+						hoveredChar = chars[i][j];
+						InfoBox.setHoveredChar(hoveredChar);
+						updateGameArea();
+						return;
+					}
+				}
+			}
+
+			hoveredChar = null;
+			updateGameArea();
+
+		},
+
+		isCharFromSelectedTeam(_team) {
+			if(_team === team) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+
 
         selectChar(chars_, char_selected, team) {
 

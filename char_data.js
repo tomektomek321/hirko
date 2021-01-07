@@ -89,6 +89,9 @@ function mag(amount) {
         }, {
             'name': 'regeneration',
             'disc': 'the char upon its spelled regenerates some life per round',
+        }, {
+            'name': 'removeSpells',
+            'disc': 'the char lost all spells that had',
         },
 
 
