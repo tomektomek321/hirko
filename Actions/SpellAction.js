@@ -9,8 +9,17 @@ var SpellAction = (function() {
 
     return {
 
-        spellAction(team, char_selected, hoveredChar) {
+        spellAction() {
+            console.log(arguments);
             return new Promise((resolve, reject) => {
+                let hoveredChar = CharsManager.getHoveredChar();
+
+                let teamCHar = CharsManager.getSelectedTeamAndChar();
+
+                    let team = teamCHar[0];
+                    let char_selected = teamCHar[1];
+
+
                 var oponent = (team == 1) ? 2 : 1;
                 let noUpdate = false;
 
@@ -61,7 +70,7 @@ var SpellAction = (function() {
                     return;
 
                 } else {
-
+                    console.log(1);
                     for(var i = 0; i < chars[oponent].length; i++) {
 
                         var tempChar = chars[oponent][i];

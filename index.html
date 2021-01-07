@@ -140,7 +140,7 @@
 
 
 
-		//gameController.showSpells_Btns();
+		gameController.showSpells_Btns();
 
 		Bullet.render();
 
@@ -174,7 +174,7 @@
 
 		Cursor.setPos(x, y);
 
-		//gameListener.setThrowRangeFraction();
+		gameListener.setThrowRangeFraction();
 		gameListener.checkHover();
 
 	}, false);
@@ -191,7 +191,7 @@
 
 
 <div id="defDIV">
-	<button type="button" class="btn btn-secondary"  onclick="gameController.next_character()">Next/Def</button>
+	<button type="button" class="btn btn-secondary"  onclick="gameListener.next_character()">Next/Def</button>
 	<button type="button" class="btn btn-info" onclick="showPlayers();">showPlayers</button>
 </div>
 

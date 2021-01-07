@@ -15,7 +15,7 @@ var CharAction = (function() {
 
             var color = (team == 1) ? "red" : "blue";
 
-            if(Spell.hasSpell() && Spell.getChoosen().name === "fireBall" && !gameController.isCharFromSelectedTeam(char.team)) {
+            if(Spell.hasSpell() && Spell.getChoosen().name === "fireBall" && !CharsManager.isCharFromSelectedTeam(char.team)) {
 
                 var spell = Spell.getChoosen();
                 const { X, Y } = Cursor.getPos();
@@ -34,7 +34,7 @@ var CharAction = (function() {
 
                 }
 
-            } else if(Spell.hasSpell() && Spell.getChoosen().name === "doubleBelt" && !gameController.isCharFromSelectedTeam(char.team)) {
+            } else if(Spell.hasSpell() && Spell.getChoosen().name === "doubleBelt" && !CharsManager.isCharFromSelectedTeam(char.team)) {
 
                 let extr = Spell.getExtraData();
 
@@ -88,11 +88,11 @@ var CharAction = (function() {
                     View.renderDoubleBelt(ctx);
                 }
 
-            } else if(Spell.hasSpell() && Spell.getChoosen().name === "nova"/* && !gameController.isCharFromSelectedTeam(char.team)*/) {
+            } else if(Spell.hasSpell() && Spell.getChoosen().name === "nova"/* && !CharsManager.isCharFromSelectedTeam(char.team)*/) {
 
-                var selPos = gameController.getSelectedChar().getPosition();
+                var selPos = CharsManager.getSelectedChar().getPosition();
 
-                var charXY = char.getXY();
+                var thisXY = char.getXY();
                 let span = char.getSide();
 
                 let spanDivided = Math.floor(span / 5);

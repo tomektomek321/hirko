@@ -58,7 +58,7 @@ var Spell = (function() {
 		_resetBtns();
 
 		for(var i=0; i < spells.length; i++) {
-			//console.log(spells);
+
 			(function(j) {
 
 				var btn = document.createElement("input");
@@ -75,13 +75,9 @@ var Spell = (function() {
 						_setChoosen(spells[j]);
 						this.classList.toggle("active");
 					});
-
 				spell.spellsBox.appendChild(btn);
-
 			})(i);
-
 		}
-
     }
 
     var _hasSpell = function() {
@@ -118,22 +114,16 @@ var Spell = (function() {
 						row += 10;
 						seat = -spell.choosen.range;
 					}
-
 				}
-
-			} else if(spell.choosen.name == "nova") {
-
 			}
-
 		},
-
 
 		renderSpellsAbove() {
 			if(spell.choosen == null) return;
 
 			if(spell.choosen.name == "nova") {
 
-				let char = gameController.getSelectedChar();
+				let char = CharsManager.getSelectedChar();
 
 				ctx.beginPath();
 				ctx.arc(char.centerXChar, char.centerYChar, 115, 0, 2 * Math.PI);
@@ -141,9 +131,7 @@ var Spell = (function() {
 				ctx.fill();
 				ctx.strokeStyle = "#4B5320";
 				ctx.stroke();
-
 			}
-
 		},
 
 		createExtraData(ctx, range, charPos, cursorPos) {

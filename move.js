@@ -107,7 +107,6 @@ var Move = (function() {
 					next_posX = next_posX + x_len;
 					next_posY = next_posY + y_len;
 
-
 				}, 25);
 
 			});

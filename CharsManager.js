@@ -8,16 +8,20 @@ var CharsManager = (function() {
 
 	var hoveredChar = null;
 
-    var _getPos = function() {
-        return pos;
-    }
-
-
-
     return {
+
+		getHoveredChar() { return hoveredChar; },
 
 		getSelectedChar() {
 			return chars[team][char_selected];
+		},
+
+		getSelectedTeam() {
+			return team;
+		},
+
+		getSelectedTeamAndChar() {
+			return [team, char_selected];
 		},
 
 		checkHover() {
@@ -27,6 +31,7 @@ var CharsManager = (function() {
 				for(var j=0; j < chars[i].length; j++) {
 
 					if(chars[i][j].isHover(Cursor.getPos())) {
+						console.log(3);
 						hoveredChar = chars[i][j];
 						InfoBox.setHoveredChar(hoveredChar);
 						updateGameArea();
@@ -49,7 +54,7 @@ var CharsManager = (function() {
 		},
 
 
-        selectChar(chars_, char_selected, team) {
+        selectChar(chars_) {
 
 			var insur = 0;
 			var found = false;
@@ -62,7 +67,6 @@ var CharsManager = (function() {
 			char_selected++;
 
 			do {
-
 				if(insur > 30) break;
 				insur++;
 
@@ -70,7 +74,6 @@ var CharsManager = (function() {
 				if((char_selected > 0) && (char_selected > chars_[team].length - 1)) {
 					char_selected = 0;
 					team = (team == 1) ? 2 : 1;
-
 				}
 
 				if(chars_[team][char_selected].getAmount() == 0) {
@@ -88,7 +91,6 @@ var CharsManager = (function() {
 					} else {
 						found = true;
 					}
-
 				}
 
 				if(!found)
@@ -96,12 +98,7 @@ var CharsManager = (function() {
 
             } while(!found)
 
-            return [char_selected, team];
         }
-
-
-
     }
-
 
 })();
