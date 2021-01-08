@@ -18,7 +18,7 @@ var Spell = (function() {
     }
 
     var _setChoosen = function(spell_) {
-		console.log(spell_);	// spell makes recursion xD
+		//console.log(spell_);	// spell makes recursion xD
 
 		if(spell_.name == "nova") {
 			Nova.createExtraData(
@@ -99,22 +99,7 @@ var Spell = (function() {
 			if(spell.choosen == null) return;
 
 			if(spell.choosen.name == "fireBall") {
-				const { X, Y } = Cursor.getPos();
-
-				var row = -spell.choosen.range;
-				var seat = -spell.choosen.range;
-				for(var i = 1; i < 50; i++) {
-
-					ctx.fillStyle = "red";
-					ctx.fillRect(X - seat, Y - row, 3, 3);
-
-					seat = seat + 10;
-
-					if(i % 7 == 0) {
-						row += 10;
-						seat = -spell.choosen.range;
-					}
-				}
+				FireBallView.render();
 			}
 		},
 
@@ -135,6 +120,13 @@ var Spell = (function() {
 		},
 
 		createExtraData(ctx, range, charPos, cursorPos) {
+			if(spell.choosen == null) return;
+
+			if(spell.choosen.name == "fireBall") {
+				FireBall.setData();
+				return;
+			}
+/*
 			let matrix = [];
 
             if(charPos.X - cursorPos.X < 0) {
@@ -186,7 +178,7 @@ var Spell = (function() {
                 ],
                 'matrix': matrix,
             }
-
+*/
 
 		}
 	}

@@ -22,7 +22,6 @@ var gameListener = (function() {
 
                 SpellAction.spellAction()
                     .then(res => {
-                        console.log(res);
                         if(res == "nextChar") {
                             this.next_character();
                         } else {
@@ -80,6 +79,10 @@ var gameListener = (function() {
                 .catch(res => {
                     console.log(res);
                 })
+        },
+
+        setSpellData() {
+            Spell.createExtraData();
         }
     }
 })();

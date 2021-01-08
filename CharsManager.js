@@ -31,7 +31,6 @@ var CharsManager = (function() {
 				for(var j=0; j < chars[i].length; j++) {
 
 					if(chars[i][j].isHover(Cursor.getPos())) {
-						console.log(3);
 						hoveredChar = chars[i][j];
 						InfoBox.setHoveredChar(hoveredChar);
 						updateGameArea();
@@ -41,7 +40,7 @@ var CharsManager = (function() {
 			}
 
 			hoveredChar = null;
-			updateGameArea();
+			//updateGameArea();
 
 		},
 
@@ -61,8 +60,6 @@ var CharsManager = (function() {
 
 			let nowSelectedChar = char_selected;
 			let nowSelectedTeam = team;
-			console.log(nowSelectedChar);
-			console.log(nowSelectedTeam);
 
 			char_selected++;
 

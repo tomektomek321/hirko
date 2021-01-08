@@ -61,12 +61,12 @@ function mag(amount) {
 
 
     this.magic = [
-        {
+        /*{
             'name': 'nova',
             'disc': 'create a nova that hits everyone in area of 40px',
             'range': 115,
             'damage': 50
-        }, {
+        },*/ {
             'name': 'fireBall',
             'disc': 'throw fireball that hits in some range',
             'range': 30,

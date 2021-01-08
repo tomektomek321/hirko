@@ -10,7 +10,6 @@ var SpellAction = (function() {
     return {
 
         spellAction() {
-            console.log(arguments);
             return new Promise((resolve, reject) => {
                 let hoveredChar = CharsManager.getHoveredChar();
 
@@ -25,7 +24,6 @@ var SpellAction = (function() {
 
                 if(Spell.getChoosen().name == "regeneration") {
                     let countRegenerate = Regenerate.countRegenerate(char_selected, team);
-                    console.log(countRegenerate);
 
                     hoveredChar.setSpell({...Spell.getChoosen(), "lifePerRound": countRegenerate});
 
@@ -36,7 +34,6 @@ var SpellAction = (function() {
                             || Spell.getChoosen().name == "halfDamage"
                             || Spell.getChoosen().name == "roundPause") {
 
-                    console.log(Spell.getChoosen());
 
                     if(hoveredChar.hasSpellUpon(Spell.getChoosen())) {
                         noUpdate = true;
