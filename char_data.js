@@ -7,7 +7,7 @@ function giermek(amount) {
     this.life = 20;
     this.lifeOfLast = 20;
     this.moveArea = 180;
-    this.side = 10;
+    this.side = 32;
     this.demage = 5;
     this.throw = false;
     this.amount = amount;
@@ -21,7 +21,7 @@ function dragon(amount) {
     this.life = 220;
     this.lifeOfLast = 220;
     this.moveArea = 280;
-    this.side = 20;
+    this.side = 32;
     this.demage = 50;
     this.throw = false;
     this.amount = amount;
@@ -35,7 +35,7 @@ function elf(amount) {
     this.life = 70;
     this.lifeOfLast = 70;
     this.moveArea = 140;
-    this.side = 15;
+    this.side = 32;
     this.demage = 20;
     this.throw = true;
     this.throwRange = 200;
@@ -52,7 +52,7 @@ function mag(amount) {
     this.life = 50;
     this.lifeOfLast = 50;
     this.moveArea = 400;
-    this.side = 15;
+    this.side = 32;
     this.demage = 25;
     this.throw = false;
     this.amount = amount;

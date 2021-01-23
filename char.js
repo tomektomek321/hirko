@@ -14,6 +14,10 @@ function char(char_, team) {
 
     this.spellsUpon = [];
 
+    this.morals = 0;
+
+    this.moralsBonus = false;
+
     this.setPosition = function(x, y) {
 
         this.posX = x;
@@ -249,6 +253,22 @@ function char(char_, team) {
     this.getRegenerateAmount = function() {
         let x = this.spellsUpon.filter(sp => sp.name === "regeneration");
         return x[0]['lifePerRound'];
+    }
+
+    this.getMorals = function() {
+        return this.morals;
+    }
+
+    this.setMorals = function(morals) {
+        this.morals = morals
+    }
+
+    this.getMoralsBonus = function() {
+        return this.moralsBonus;
+    }
+
+    this.setMoralsBonus = function(moralsBonus_) {
+        this.moralsBonus = moralsBonus_
     }
 }
 

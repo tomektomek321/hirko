@@ -10,6 +10,7 @@ var View = (function() {
         ctx.fillStyle = color;
         if(posX == null || posY == null) return;
         ctx.fillRect(posX, posY, side, side);
+        //ctx.drawImage(monster, posX, posY);
     }
 
     var _render_charInfo = function(ctx, life, x, y, name, amount, dmg) {
@@ -20,7 +21,7 @@ var View = (function() {
 
     var _renderSelectedCharPosition = function(char, team) {
         var xy = char.getXY();
-		var posX = (team == 1) ? xy['X'] -15 : xy['X'] + 25;
+		var posX = (team == 1) ? xy['X'] -15 : xy['X'] + 35;
         ctx.fillStyle = "green";
         ctx.fillRect(posX, xy['Y'] + 3, 7, 7);
     }

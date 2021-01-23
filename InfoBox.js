@@ -49,8 +49,10 @@ var InfoBox = (function() {
 
             }
 
-
-
+            box.innerHTML +=
+                    "MORALS DATA <br />" +
+                    "team1: " +  (CharsManager.getMoralsData()['team1queue'].toString()) + "<br />" +
+                    "team2: " +  (CharsManager.getMoralsData()['team2queue'].toString()) + "<br />"
 
         }
     }
